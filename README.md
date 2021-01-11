@@ -1,4 +1,4 @@
-# ConentProviderExample
+# Conent Provider Example
 Creating custom content provider which to access database and share between other apps; 
 
 AppProvider - custom content provider, managing basic crud operations.
