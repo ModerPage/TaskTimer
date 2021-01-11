@@ -40,7 +40,7 @@ public class AppProvider extends ContentProvider {
      * if your Android package name is com.example.<appname>,
      * you should give your provider the authority com.example.<appname>.provider.
      */
-    static final String CONTENT_AUTHORITY = "me.modernpage.tasktimer.provider";
+    static final String CONTENT_AUTHORITY = "me.modernpage.tasktimer.AppProvider";
 
     /**
      * A content URI is a URI that identifies data in a provider.
