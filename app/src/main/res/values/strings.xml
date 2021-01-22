@@ -16,4 +16,6 @@
     <string name="addedit_description_hint">Task description (optional)</string>
     <string name="addedit_sortorder_hint">Orders: sorts low to high</string>
     <string name="title_activity_add_edit">AddEditActivity</string>
+    <string name="instructions_heading">Instructions</string>
+    <string name="instructions">Use the button (+) in the toolbar above to create new tasks.\n\nTasks with lower sort orders will be placed higher up the list. Tasks with the same sort order will be sorted alphabetically.\n\nTapping a task will start the timer for that task (and will stop the timer for any previous task that was being timed).\n\nEach task has Edit and Delete buttons if you want to change the details or remove the task.</string>
 </resources>
