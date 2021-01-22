@@ -1,5 +1,5 @@
 # Task Timer
-  Implementing 
-    - SQLite database
-    - Custom Content Provider for the database
-    - Cursor Loader for the database reading
+  Implementing </br>  
+    - SQLite database </br>
+    - Custom Content Provider for the database </br>
+    - Cursor Loader for the database reading </br>
