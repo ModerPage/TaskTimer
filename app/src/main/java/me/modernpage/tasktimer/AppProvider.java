@@ -84,6 +84,7 @@ public class AppProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        Log.d(TAG, "onCreate: called");
         mOpenHelper = AppDatabase.getInstance(getContext());
         return true;
     }

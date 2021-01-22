@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context=".AddEditActivityFragment"
+    tools:showIn="@layout/activity_add_edit">
+
+    <EditText
+        android:id="@+id/addedit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/addedit_name_hint"
+        android:inputType="textNoSuggestions|textEmailAddress"
+        android:maxLength="64" />
+
+    <EditText
+        android:id="@+id/addedit_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/addedit_description_hint"
+        android:inputType="textMultiLine"
+        android:maxLength="256" />
+
+    <EditText
+        android:id="@+id/addedit_sortorder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/addedit_sortorder_hint"
+        android:inputType="number"
+        android:maxLength="9" />
+
+    <Button
+        android:id="@+id/addedit_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/addedit_button_name" />
+</LinearLayout>

@@ -77,4 +77,10 @@ public class AppDatabase extends SQLiteOpenHelper {
         }
         Log.d(TAG, "onUpgrade: ends");
     }
+
+    @Override
+    public synchronized void close() {
+        Log.d(TAG, "close: called");
+        instance.close();
+    }
 }
