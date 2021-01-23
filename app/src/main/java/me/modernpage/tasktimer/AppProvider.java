@@ -138,6 +138,14 @@ public class AppProvider extends ContentProvider {
         }
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         Cursor cursor = queryBuilder.query(db,projection, selection, selectionArgs, null, null, sortOrder);
+        // setting notification to contentResolver
+        // any listeners attached to content resolver are being notified of change to the data uri we specified
+        // in this case our uri is task table, any change to the table can be notified
+        // so built in cursor loader class is registering itself as the listener with the content resolver it queries
+        // so we don't have to special in client code, but custom cursor loader created by yourself should register an observer
+        // this line registers listener to receive notifications when the data changes
+        // we should trigger the notifications in insert, update and delete methods
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -213,7 +221,7 @@ public class AppProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert into " + uri.toString());
                 }
                 break;
-//            case TIMINGS:
+            case TIMINGS:
 //                database = mOpenHelper.getWritableDatabase();
 //                recordId = database.insert(TimingsContract.TABLE_NAME, null, contentValues);
 //                if(recordId >= 0) {
@@ -225,6 +233,19 @@ public class AppProvider extends ContentProvider {
 
             default:
                 throw new IllegalArgumentException("Unknown uri: " + uri);
+        }
+        if(recordId >= 0) {
+            Log.d(TAG, "insert: setting notifyChanged with: " + uri);
+            // something was inserted
+            // trigger notification, notifies all registered observers that a row was updated
+            // Uri: The uri of the content that was changed. This value cannot be null.
+            // second parameter is content observer that trigger the change, ContentObserver: The observer that originated the change, may be null.
+            // The observer that originated the change will only receive the notification if it has requested to receive self-change notifications
+            // by implementing ContentObserver#deliverSelfNotifications() to return true.This value may be null.
+            // app provider just performs change, should not receive any notification
+            getContext().getContentResolver().notifyChange(uri, null);
+        } else {
+            Log.d(TAG, "insert: nothing inserted");
         }
         Log.d(TAG, "Existing insert, returning " + returnUri);
         return returnUri;
@@ -275,6 +296,13 @@ public class AppProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown uri: " + uri);
         }
+        
+        if(count > 0) {
+            Log.d(TAG, "delete: setting notifyChange with " + uri);
+            getContext().getContentResolver().notifyChange(uri, null);
+        } else {
+            Log.d(TAG, "delete: nothing deleted");
+        }
         Log.d(TAG, "Existing update, returning " + count);
         return count;
     }
@@ -323,6 +351,13 @@ public class AppProvider extends ContentProvider {
 
             default:
                 throw new IllegalArgumentException("Unknown uri: " + uri);
+        }
+
+        if(count > 0) {
+            Log.d(TAG, "update: setting notifyChange with " + uri);
+            getContext().getContentResolver().notifyChange(uri, null);
+        } else {
+            Log.d(TAG, "update: nothing deleted");
         }
         Log.d(TAG, "Existing update, returning " + count);
         return count;

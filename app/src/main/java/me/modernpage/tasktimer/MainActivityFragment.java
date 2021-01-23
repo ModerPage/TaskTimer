@@ -95,7 +95,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                             TasksContract.Columns.TASKS_DESCRIPTION,
                             TasksContract.Columns.TASKS_SORTORDER};
 
-        String sortOrder = TasksContract.Columns.TASKS_SORTORDER + ", " + TasksContract.Columns.TASKS_NAME;
+        String sortOrder = TasksContract.Columns.TASKS_SORTORDER + ", " + TasksContract.Columns.TASKS_NAME + " COLLATE NOCASE";
 
         switch (id) {
             case LOADER_ID:
