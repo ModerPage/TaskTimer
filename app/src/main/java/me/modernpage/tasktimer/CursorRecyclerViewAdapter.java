@@ -16,9 +16,16 @@ import org.w3c.dom.Text;
 public class CursorRecyclerViewAdapter extends RecyclerView.Adapter<CursorRecyclerViewAdapter.TaskViewHolder> {
     private static final String TAG = "CursorRecyclerViewAdapt";
     private Cursor mCursor;
+    private OnTaskClickListener mCallback;
 
-    public CursorRecyclerViewAdapter(Cursor cursor) {
+    public interface OnTaskClickListener {
+        void onEditClick(Task task);
+        void onDeleteClick(Task task);
+    }
+
+    public CursorRecyclerViewAdapter(Cursor cursor, OnTaskClickListener callback) {
         mCursor = cursor;
+        mCallback = callback;
     }
 
     // viewType is used when populating different kind of views on the recycler view list
@@ -42,10 +49,37 @@ public class CursorRecyclerViewAdapter extends RecyclerView.Adapter<CursorRecycl
             if(!mCursor.moveToPosition(position)) {
                 throw new IllegalStateException("Couldn't move to the position : " + position);
             }
-            holder.mName.setText(mCursor.getString(mCursor.getColumnIndex(TasksContract.Columns.TASKS_NAME)));
-            holder.mDescription.setText(mCursor.getString(mCursor.getColumnIndex(TasksContract.Columns.TASKS_DESCRIPTION)));
+            
+            final Task task = new Task(mCursor.getLong(mCursor.getColumnIndex(TasksContract.Columns._ID)),
+                    mCursor.getString(mCursor.getColumnIndex(TasksContract.Columns.TASKS_NAME)),
+                    mCursor.getString(mCursor.getColumnIndex(TasksContract.Columns.TASKS_DESCRIPTION)),
+                    mCursor.getInt(mCursor.getColumnIndex(TasksContract.Columns.TASKS_SORTORDER)));
+            
+            holder.mName.setText(task.getName());
+            holder.mDescription.setText(task.getDescription());
             holder.mDeleteButton.setVisibility(View.VISIBLE); // TODO add onClick listener
             holder.mEditButton.setVisibility(View.VISIBLE); // TODO add onClick listener
+
+            View.OnClickListener buttonListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (view.getId()) {
+                        case R.id.tli_delete:
+                            if(mCallback != null)
+                                mCallback.onDeleteClick(task);
+                            break;
+                        case R.id.tli_edit:
+                            if(mCallback != null) 
+                                mCallback.onEditClick(task);
+                            break;
+                        default:
+                            Log.d(TAG, "onClick: found unexpected button id");
+                    }
+                }
+            };
+
+            holder.mDeleteButton.setOnClickListener(buttonListener);
+            holder.mEditButton.setOnClickListener(buttonListener);
         }
     }
 

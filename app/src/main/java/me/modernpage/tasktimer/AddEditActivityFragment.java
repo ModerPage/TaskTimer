@@ -83,14 +83,14 @@ public class AddEditActivityFragment extends Fragment {
                             values.put(TasksContract.Columns.TASKS_NAME, mNameTextView.getText().toString());
 
                         if(!mDescriptionTextView.getText().toString().equals(task.getDescription()))
-                            values.put(TasksContract.Columns.TASKS_NAME, mDescriptionTextView.getText().toString());
+                            values.put(TasksContract.Columns.TASKS_DESCRIPTION, mDescriptionTextView.getText().toString());
 
                         if(so != task.getSortOrder())
                             values.put(TasksContract.Columns.TASKS_SORTORDER, mSortOrderTextView.getText().toString());
 
                         if(values.size() != 0) {
                             Log.d(TAG, "onClick: updating task");
-                            contentResolver.update(TasksContract.CONTENT_URI,values, TasksContract.Columns._ID,
+                            contentResolver.update(TasksContract.CONTENT_URI, values,TasksContract.Columns._ID + " = ?",
                                     new String[]{String.valueOf(task.getId())});
                         }
                         break;
