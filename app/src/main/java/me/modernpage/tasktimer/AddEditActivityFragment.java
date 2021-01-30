@@ -1,9 +1,12 @@
 package me.modernpage.tasktimer;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
 import android.util.Log;
@@ -26,9 +29,38 @@ public class AddEditActivityFragment extends Fragment {
     private EditText mDescriptionTextView;
     private EditText mSortOrderTextView;
     private Button mSaveButton;
+    private OnSaveClicked mOnSaveClicked;
+
+    /**
+     * we use this interface to make notification to the attached activity, that this fragment
+     * finished processing, and now can be removing/ closing it
+     *
+     * on the other hand, it is not good way to remove itself by accessing to the attached activity
+     * and then through it remove itself.
+     */
+    interface OnSaveClicked {
+        void onSaveClicked();
+    }
 
     public AddEditActivityFragment() {
         Log.d(TAG, "AddEditActivityFragment: Constructor called");
+    }
+
+    /**
+     * called once the fragment is associated with its activity.
+     * @param context
+     */
+    @Override
+    public void onAttach(@NonNull Context context) {
+        Log.d(TAG, "onAttach: called");
+        super.onAttach(context);
+
+        Activity activity = getActivity();
+        if(!(activity instanceof OnSaveClicked)) {
+            throw new ClassCastException(activity.getClass().getSimpleName() +
+                    "must implement AddEditActivityFragment.OnSaveClicked interface");
+        }
+        mOnSaveClicked = (OnSaveClicked) activity;
     }
 
     @Override
@@ -41,7 +73,9 @@ public class AddEditActivityFragment extends Fragment {
         mSortOrderTextView = view.findViewById(R.id.addedit_sortorder);
         mSaveButton = view.findViewById(R.id.addedit_save);
 
-        Bundle arguments = getActivity().getIntent().getExtras();
+//        Bundle arguments = getActivity().getIntent().getExtras();
+        Bundle arguments = getArguments();
+
         final Task task;
         if(arguments != null) {
             Log.d(TAG, "onCreateView: retrieving task details ");
@@ -105,10 +139,24 @@ public class AddEditActivityFragment extends Fragment {
                         break;
                 }
                 Log.d(TAG, "onClick: Done editing");
+                if(mOnSaveClicked != null)
+                    mOnSaveClicked.onSaveClicked();
             }
         });
         Log.d(TAG, "onCreateView: Exiting...");
 
         return view;
+    }
+
+    /**
+     * called immediately prior to the fragment no longer being associated with its activity.
+     *
+     * it is good practise to look carefully at anything you perform in onAttach and consider doing
+     * reverse in onDetach.
+     */
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mOnSaveClicked = null;
     }
 }

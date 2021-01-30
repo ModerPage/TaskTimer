@@ -10,13 +10,16 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements CursorRecyclerViewAdapter.OnTaskClickListener {
+public class MainActivity extends AppCompatActivity implements
+        CursorRecyclerViewAdapter.OnTaskClickListener, AddEditActivityFragment.OnSaveClicked {
     private static final String TAG = "MainActivity";
 
     // Whether or not the activity is in 2-pane mode
@@ -32,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements CursorRecyclerVie
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // checking whether app is running on landscape mode or over 600dp screen size
+        if(findViewById(R.id.addedit_container) != null) {
+            mTwoPane = true;
+        }
     }
 
     @Override
@@ -81,6 +88,17 @@ public class MainActivity extends AppCompatActivity implements CursorRecyclerVie
 
         if(mTwoPane) {
             Log.d(TAG, "taskEditRequest: in two-pane mode (tablet)");
+            AddEditActivityFragment fragment = new AddEditActivityFragment();
+
+            Bundle arguments = new Bundle();
+            arguments.putSerializable(Task.class.getSimpleName(), task);
+            fragment.setArguments(arguments);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+//            using replace() instead of add(), removing all existing fragments then add, but add() always adding
+            fragmentManager.beginTransaction()
+                    .replace(R.id.addedit_container, fragment)
+                    .commit();
         } else {
             Log.d(TAG, "taskEditRequest: in single-pane mode (phone)");
             // in a single-pane mode, start the detail activity for the selected item id
@@ -90,6 +108,18 @@ public class MainActivity extends AppCompatActivity implements CursorRecyclerVie
                 startActivity(detailIntent);
             } else // adding a new task
                 startActivity(detailIntent);
+        }
+    }
+
+    @Override
+    public void onSaveClicked() {
+        Log.d(TAG, "onSaveClicked: called");
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.addedit_container);
+        if(fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(fragment)
+                    .commit();
         }
     }
 }

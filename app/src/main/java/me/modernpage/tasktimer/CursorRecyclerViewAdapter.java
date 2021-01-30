@@ -11,8 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 public class CursorRecyclerViewAdapter extends RecyclerView.Adapter<CursorRecyclerViewAdapter.TaskViewHolder> {
     private static final String TAG = "CursorRecyclerViewAdapt";
     private Cursor mCursor;
@@ -57,8 +55,8 @@ public class CursorRecyclerViewAdapter extends RecyclerView.Adapter<CursorRecycl
             
             holder.mName.setText(task.getName());
             holder.mDescription.setText(task.getDescription());
-            holder.mDeleteButton.setVisibility(View.VISIBLE); // TODO add onClick listener
-            holder.mEditButton.setVisibility(View.VISIBLE); // TODO add onClick listener
+            holder.mDeleteButton.setVisibility(View.VISIBLE);
+            holder.mEditButton.setVisibility(View.VISIBLE);
 
             View.OnClickListener buttonListener = new View.OnClickListener() {
                 @Override
