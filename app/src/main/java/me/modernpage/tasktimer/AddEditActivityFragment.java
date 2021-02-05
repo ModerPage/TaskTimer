@@ -46,6 +46,10 @@ public class AddEditActivityFragment extends Fragment {
         Log.d(TAG, "AddEditActivityFragment: Constructor called");
     }
 
+    public boolean canClose() {
+        return false;
+    }
+
     /**
      * called once the fragment is associated with its activity.
      * @param context
@@ -73,7 +77,6 @@ public class AddEditActivityFragment extends Fragment {
         mSortOrderTextView = view.findViewById(R.id.addedit_sortorder);
         mSaveButton = view.findViewById(R.id.addedit_save);
 
-//        Bundle arguments = getActivity().getIntent().getExtras();
         Bundle arguments = getArguments();
 
         final Task task;

@@ -18,4 +18,15 @@
     <string name="title_activity_add_edit">AddEditActivity</string>
     <string name="instructions_heading">Instructions</string>
     <string name="instructions">Use the button (+) in the toolbar above to create new tasks.\n\nTasks with lower sort orders will be placed higher up the list. Tasks with the same sort order will be sorted alphabetically.\n\nTapping a task will start the timer for that task (and will stop the timer for any previous task that was being timed).\n\nEach task has Edit and Delete buttons if you want to change the details or remove the task.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="deldaig_message">Deleting will also delete all timing data associated with task id %1$d: %2$s.</string>
+    <string name="deldiag_positive_caption">Delete</string>
+    <string name="cancelEditDiag_message">You have unsaved changes. Do you want to discard changes, or continue editing?</string>
+    <string name="cancelEditDiag_positive_caption">Continue editing</string>
+    <string name="cancelEditDiag_negative_caption">Discard changes</string>
+    <string name="about_copyright">Copyright © 2021 ModernPage</string>
+    <string name="about_weblink">Instructions available at www.modernpage.me</string>
+    <string name="about_email">For support, email tasktimer@modernpage.me</string>
+    <string name="about_credits">Icon derived from <b>analog clock</b> at openclipart.org by <b>Anonymous</b></string>
 </resources>
