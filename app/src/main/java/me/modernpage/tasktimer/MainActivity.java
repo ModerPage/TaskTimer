@@ -1,6 +1,7 @@
 package me.modernpage.tasktimer;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -87,9 +88,27 @@ public class MainActivity extends AppCompatActivity implements CursorRecyclerVie
         builder.setIcon(R.mipmap.ic_launcher);
 
         builder.setView(messageView);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(mAlertDialog != null && mAlertDialog.isShowing())
+                    mAlertDialog.dismiss();
+            }
+        });
         mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(true);
 
+        // this way won't work for us, since icon and title is not part of the view
+        // when tap on them, dismissing won't work
+        // second problem is that links are clickable , that intercepts taps on the entire line of text
+//        messageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d(TAG, "onClick: entering messageView Onclick, showing = " + mAlertDialog.isShowing());
+//                if(mAlertDialog != null && mAlertDialog.isShowing())
+//                    mAlertDialog.dismiss();
+//            }
+//        });
         TextView tv = messageView.findViewById(R.id.about_version);
         tv.setText("v" + BuildConfig.VERSION_NAME);
         mAlertDialog.show();
